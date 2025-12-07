@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DankedIn</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <h1 class="messaging-title">DankedIn</h1>
+                <div class="search-container">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M11.435 10.063h-.723l-.256-.247a5.92 5.92 0 0 0 1.437-3.87 5.946 5.946 0 1 0-5.947 5.947 5.92 5.92 0 0 0 3.87-1.437l.247.256v.723L14.637 16 16 14.637l-4.565-4.574zm-5.489 0A4.111 4.111 0 0 1 1.83 5.946 4.111 4.111 0 0 1 5.946 1.835a4.111 4.111 0 0 1 4.116 4.111 4.111 4.111 0 0 1-4.116 4.117z" fill="currentColor"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Search messages">
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <button class="icon-button reset-button" id="resetButton" title="Reset Game">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 3V1M10 1L7 4M10 1L13 4M3 10C3 6.13401 6.13401 3 10 3M3 10H1M3 10L4 7M17 10C17 13.866 13.866 17 10 17M17 10H19M17 10L16 13M10 17V19M10 19L7 16M10 19L13 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <button class="icon-button">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                        <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                        <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Timer Bar -->
+        <div class="timer-bar" id="timerBar">
+            <div class="timer-container">
+                <span class="timer-label">Time Remaining:</span>
+                <span class="timer-display" id="timerDisplay">0:30</span>
+            </div>
+            <div class="timer-progress">
+                <div class="timer-progress-fill" id="timerProgress"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Left Panel - Conversation List -->
+            <aside class="conversation-list-panel">
+                <!-- Filter Tabs -->
+                <div class="filter-tabs">
+                    <button class="filter-tab active">Focused</button>
+                    <button class="filter-tab">Jobs</button>
+                    <button class="filter-tab">Unread</button>
+                    <button class="filter-tab">Connections</button>
+                    <button class="filter-tab">InMail</button>
+                    <button class="filter-tab">Starred</button>
+                </div>
+
+                <!-- Conversation Items -->
+                <div class="conversation-items" id="conversationList">
+                    <!-- Conversations will be dynamically generated -->
+                </div>
+            </aside>
+
+            <!-- Right Panel - Active Chat Thread -->
+            <main class="chat-panel">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="chat-header-left">
+                        <div class="chat-profile-avatar">
+                            <div class="avatar-placeholder"></div>
+                            <span class="status-dot"></span>
+                        </div>
+                        <div class="chat-header-info">
+                            <h2 class="chat-contact-name">Contact Name 1</h2>
+                            <span class="active-status">Active now</span>
+                        </div>
+                    </div>
+                    <div class="chat-header-right">
+                        <button class="icon-button">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                                <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                                <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            </svg>
+                        </button>
+                        <button class="icon-button star-button">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 15l-5.5 2.9 1.05-6.1L1 7.5l6.05-.88L10 1l2.95 5.62L19 7.5l-4.55 4.3 1.05 6.1L10 15z" fill="currentColor"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages Container -->
+                <div class="messages-container" id="messagesContainer">
+                    <!-- Messages will be dynamically generated -->
+                </div>
+
+                <!-- Message Input / Response Buttons -->
+                <div class="message-input-container" id="messageInputContainer">
+                    <div class="response-buttons-container" id="responseButtonsContainer">
+                        <!-- Response buttons will be dynamically generated -->
+                    </div>
+                    <div class="message-input-wrapper" id="messageInputWrapper" style="display: none;">
+                        <input type="text" class="message-input" placeholder="Write a message...">
+                        <button class="send-button">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 3L17 10L10 17M17 10H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Floating Stamp Button -->
+    <div class="stamp-container" id="stampContainer">
+        <div class="stamp-button" id="stampButton">
+            <div class="stamp-handle">⋮⋮</div>
+            <div class="stamp-options">
+                <button class="stamp-option fake-stamp" data-stamp="fake">FAKE</button>
+                <button class="stamp-option real-stamp" data-stamp="real">REAL</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Results Screen Overlay -->
+    <div class="results-overlay" id="resultsOverlay">
+        <div class="results-content">
+            <h2 class="results-title" id="resultsTitle">Game Over</h2>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Time Taken:</span>
+                    <span class="stat-value" id="statTime">0:00</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Correct Guesses:</span>
+                    <span class="stat-value" id="statCorrect">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Incorrect Guesses:</span>
+                    <span class="stat-value" id="statIncorrect">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Accuracy:</span>
+                    <span class="stat-value" id="statAccuracy">0%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Result:</span>
+                    <span class="stat-value" id="statResult">-</span>
+                </div>
+            </div>
+            <button class="restart-button" id="restartButton">Play Again</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
