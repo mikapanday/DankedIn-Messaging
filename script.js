@@ -1,6 +1,6 @@
 // Main Game UI Controller
 
-let stampPosition = { x: window.innerWidth - 200, y: 100 };
+let stampPosition = { x: 250, y: 100 };
 let isDragging = false;
 let dragOffset = { x: 0, y: 0 };
 
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeGame() {
     // Initial UI update
+    hideChatPanel();
     updateConversationList();
     updateMessages();
     updateResponseButtons();
@@ -64,13 +65,36 @@ function setupEventListeners() {
             hideResultsScreen();
         });
     }
+
+    // Back button to return to conversation list
+    const backButton = document.getElementById('backButton');
+    if (backButton) {
+        backButton.addEventListener('click', () => {
+            hideChatPanel();
+        });
+    }
+}
+
+function showChatPanel() {
+    const chatPanel = document.querySelector('.chat-panel');
+    if (chatPanel) {
+        chatPanel.classList.add('active');
+    }
+}
+
+function hideChatPanel() {
+    const chatPanel = document.querySelector('.chat-panel');
+    if (chatPanel) {
+        chatPanel.classList.remove('active');
+    }
 }
 
 function setupStampDrag() {
     const stampHandle = document.querySelector('.stamp-handle');
     const stampContainer = document.getElementById('stampContainer');
+    const iphoneFrame = document.querySelector('.iphone-frame');
     
-    if (!stampHandle || !stampContainer) return;
+    if (!stampHandle || !stampContainer || !iphoneFrame) return;
 
     // Set initial position
     stampContainer.style.left = stampPosition.x + 'px';
@@ -86,12 +110,16 @@ function setupStampDrag() {
 
     document.addEventListener('mousemove', (e) => {
         if (isDragging) {
-            stampPosition.x = e.clientX - dragOffset.x;
-            stampPosition.y = e.clientY - dragOffset.y;
+            const frameRect = iphoneFrame.getBoundingClientRect();
+            const relativeX = e.clientX - frameRect.left - dragOffset.x;
+            const relativeY = e.clientY - frameRect.top - dragOffset.y;
             
-            // Keep within bounds
-            stampPosition.x = Math.max(0, Math.min(stampPosition.x, window.innerWidth - 150));
-            stampPosition.y = Math.max(0, Math.min(stampPosition.y, window.innerHeight - 100));
+            // Keep within iPhone frame bounds
+            const maxX = frameRect.width - 150;
+            const maxY = frameRect.height - 100;
+            
+            stampPosition.x = Math.max(0, Math.min(relativeX, maxX));
+            stampPosition.y = Math.max(0, Math.min(relativeY, maxY));
             
             stampContainer.style.left = stampPosition.x + 'px';
             stampContainer.style.top = stampPosition.y + 'px';
@@ -183,6 +211,7 @@ function updateConversationList() {
             game.activeConversationId = conversation.id;
             conversation.isRead = true;
             updateGameUI();
+            showChatPanel();
         });
 
         container.appendChild(item);
@@ -376,9 +405,10 @@ function updateTimer() {
 window.updateTimer = updateTimer;
 window.updateGameUI = updateGameUI;
 window.resetGameUI = function() {
+    hideChatPanel();
     updateGameUI();
     updateTimer();
-    stampPosition = { x: window.innerWidth - 200, y: 100 };
+    stampPosition = { x: 250, y: 100 };
     const stampContainer = document.getElementById('stampContainer');
     if (stampContainer) {
         stampContainer.style.left = stampPosition.x + 'px';

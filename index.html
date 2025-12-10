@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="app-container">
+    <div class="iphone-frame">
+        <div class="app-container">
         <!-- Top Bar -->
         <header class="top-bar">
             <div class="top-bar-left">
@@ -70,6 +71,11 @@
                 <!-- Chat Header -->
                 <div class="chat-header">
                     <div class="chat-header-left">
+                        <button class="icon-button back-button" id="backButton" title="Back to conversations">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
                         <div class="chat-profile-avatar">
                             <div class="avatar-placeholder"></div>
                             <span class="status-dot"></span>
@@ -118,13 +124,14 @@
         </div>
     </div>
 
-    <!-- Floating Stamp Button -->
-    <div class="stamp-container" id="stampContainer">
-        <div class="stamp-button" id="stampButton">
-            <div class="stamp-handle">⋮⋮</div>
-            <div class="stamp-options">
-                <button class="stamp-option fake-stamp" data-stamp="fake">FAKE</button>
-                <button class="stamp-option real-stamp" data-stamp="real">REAL</button>
+        <!-- Floating Stamp Button -->
+        <div class="stamp-container" id="stampContainer">
+            <div class="stamp-button" id="stampButton">
+                <div class="stamp-handle">⋮⋮</div>
+                <div class="stamp-options">
+                    <button class="stamp-option fake-stamp" data-stamp="fake">FAKE</button>
+                    <button class="stamp-option real-stamp" data-stamp="real">REAL</button>
+                </div>
             </div>
         </div>
     </div>
