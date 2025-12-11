@@ -185,9 +185,10 @@ function updateConversationList() {
         // Format date
         const date = lastMessage ? formatMessageDate(lastMessage.timestamp) : '';
 
+        const avatarHtml = getAvatarHtml(conversation, false);
         item.innerHTML = `
             <div class="profile-avatar" style="position: relative;">
-                <div class="avatar-placeholder" style="background: ${conversation.avatarColor}"></div>
+                ${avatarHtml}
                 ${conversation.isOnline ? '<span class="status-dot"></span>' : ''}
                 ${conversation.isTyping ? '<span class="status-dot" style="animation: pulse 1s infinite;"></span>' : ''}
                 ${conversation.isStamped ? `<span class="stamp-imprint ${conversation.stampType}">${conversation.stampType.toUpperCase()}</span>` : ''}
@@ -253,9 +254,10 @@ function updateMessages() {
                 </div>
             `;
         } else {
+            const contactAvatarHtml = getAvatarHtml(conversation, true);
             messageDiv.innerHTML = `
                 <div class="message-avatar">
-                    <div class="avatar-placeholder small" style="background: ${conversation.avatarColor}"></div>
+                    ${contactAvatarHtml}
                 </div>
                 <div class="message-content">
                     <div class="message-header">
@@ -274,15 +276,15 @@ function updateMessages() {
 
     // Show typing indicator if active
     if (conversation.isTyping) {
+        const typingAvatarHtml = getAvatarHtml(conversation, true);
         const typingDiv = document.createElement('div');
         typingDiv.className = 'message contact-message';
         typingDiv.innerHTML = `
             <div class="message-avatar">
-                <div class="avatar-placeholder small" style="background: ${conversation.avatarColor}"></div>
+                ${typingAvatarHtml}
             </div>
             <div class="message-content">
-                <div class="typing-indicator">
-                    <span>${conversation.name} is typing</span>
+                <div class="message-bubble contact-bubble typing-bubble">
                     <div class="typing-dots">
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
@@ -352,9 +354,7 @@ function updateChatHeader() {
     if (chatHeader) {
         chatHeader.querySelector('.chat-contact-name').textContent = conversation.name;
         const statusEl = chatHeader.querySelector('.active-status');
-        if (conversation.isTyping) {
-            statusEl.textContent = 'typing...';
-        } else if (conversation.hasEnded) {
+        if (conversation.hasEnded) {
             statusEl.textContent = 'Conversation ended';
         } else if (conversation.isOnline) {
             statusEl.textContent = 'Active now';
@@ -363,10 +363,16 @@ function updateChatHeader() {
         }
     }
     if (chatAvatar) {
-        const avatarPlaceholder = chatAvatar.querySelector('.avatar-placeholder');
-        if (avatarPlaceholder) {
-            avatarPlaceholder.style.background = conversation.avatarColor;
+        // Update avatar (image or placeholder)
+        const existingAvatar = chatAvatar.querySelector('.avatar-placeholder, .avatar-image');
+        if (existingAvatar) {
+            existingAvatar.remove();
         }
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = getAvatarHtml(conversation, false);
+        const newAvatar = tempDiv.firstElementChild;
+        chatAvatar.insertBefore(newAvatar, chatAvatar.firstChild);
+        
         // Update online status dot
         let statusDot = chatAvatar.querySelector('.status-dot');
         if (conversation.isOnline && !conversation.isTyping) {
@@ -596,4 +602,13 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+function getAvatarHtml(conversation, isSmall = false) {
+    const sizeClass = isSmall ? 'small' : '';
+    if (conversation.avatarImage) {
+        return `<img src="profile-photos/${conversation.avatarImage}" alt="${conversation.name}" class="avatar-image ${sizeClass}" />`;
+    } else {
+        return `<div class="avatar-placeholder ${sizeClass}" style="background: ${conversation.avatarColor}"></div>`;
+    }
 }

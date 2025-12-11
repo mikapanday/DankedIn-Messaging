@@ -143,6 +143,7 @@ class RecruiterGame {
             hasEnded: false,
             endedAt: null,
             avatarColor: this.getRandomAvatarColor(),
+            avatarImage: this.getRandomAvatarImage(),
             isOnline: isOnline
         };
         
@@ -837,6 +838,26 @@ class RecruiterGame {
             'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)'
         ];
         return colors[Math.floor(Math.random() * colors.length)];
+    }
+    
+    getRandomAvatarImage() {
+        // Get all profile photos from the profile-photos folder
+        // This will be populated when images are added
+        const profilePhotos = this.getProfilePhotoList();
+        if (profilePhotos.length > 0) {
+            return profilePhotos[Math.floor(Math.random() * profilePhotos.length)];
+        }
+        return null; // Fallback to color if no images available
+    }
+    
+    getProfilePhotoList() {
+        // List of profile photo filenames
+        // Add your image filenames here as you add them to the profile-photos folder
+        // Example: ['photo1.jpg', 'photo2.jpg', 'photo3.jpg']
+        const photos = [];
+        // This will be populated with actual filenames
+        // For now, return empty array - images will be added later
+        return photos;
     }
     
     shuffleArray(array) {
